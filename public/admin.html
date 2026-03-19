@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - 3D Work-Shop</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <main class="admin-page">
+      <section class="admin-main">
+        <header class="main-area admin-topbar">
+          <div>
+            <h1>Admin Dashboard</h1>
+            <p class="muted">Open database editors in popups and manage entries.</p>
+          </div>
+          <div class="row">
+            <button id="openUsersDbBtn" class="btn" type="button">Users Database</button>
+            <button id="openObjectsDbBtn" class="btn" type="button">Objects Database</button>
+          </div>
+        </header>
+
+        <section class="main-area admin-center">
+          <div class="objects-grid admin-cards">
+            <article class="object-card admin-card">
+              <p class="name">Users DB</p>
+              <p class="uploader">Create, edit, delete users and roles</p>
+              <div class="row">
+                <button id="openUsersDbBtn2" class="btn" type="button">Open Popup</button>
+              </div>
+            </article>
+
+            <article class="object-card admin-card">
+              <p class="name">Objects DB</p>
+              <p class="uploader">Create, edit, delete uploaded 3D objects</p>
+              <div class="row">
+                <button id="openObjectsDbBtn2" class="btn" type="button">Open Popup</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <aside class="sidebar admin-sidebar">
+        <div class="side-card user-card admin-user-card">
+          <div class="avatar"></div>
+          <p>Signed in as</p>
+          <h2 id="adminUserName">admin</h2>
+          <p class="muted" id="adminUserRole">admin</p>
+          <div class="form-grid">
+            <a class="btn btn-secondary" href="/">Back To Workshop</a>
+            <button id="logoutBtn" class="btn btn-secondary" type="button">Logout</button>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <p class="small-title">Theme</p>
+          <button id="themeToggle" class="toggle" type="button" aria-label="Toggle theme">
+            <span class="knob"></span>
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <div id="usersPopup" class="popup hidden" role="dialog" aria-modal="true" aria-labelledby="usersPopupTitle">
+      <div class="popup-card wide admin-popup-card">
+        <div class="row spread">
+          <h3 id="usersPopupTitle">Users Database</h3>
+          <button class="close-popup" data-close="usersPopup" type="button">X</button>
+        </div>
+
+        <section class="admin-create">
+          <h4>Create New User</h4>
+          <form id="createUserForm" class="form-grid admin-create-grid">
+            <label>
+              Username
+              <input name="username" required minlength="3" />
+            </label>
+            <label>
+              Password
+              <input name="password" type="password" required minlength="4" />
+            </label>
+            <label>
+              Role
+              <select name="role">
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+            </label>
+            <button class="btn" type="submit">Create User</button>
+          </form>
+        </section>
+
+        <div class="row spread">
+          <h4>Existing Users</h4>
+          <button id="refreshUsersBtn" class="btn btn-secondary" type="button">Refresh</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>New Password</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="objectsPopup" class="popup hidden" role="dialog" aria-modal="true" aria-labelledby="objectsPopupTitle">
+      <div class="popup-card wide admin-popup-card">
+        <div class="row spread">
+          <h3 id="objectsPopupTitle">Objects Database</h3>
+          <button class="close-popup" data-close="objectsPopup" type="button">X</button>
+        </div>
+
+        <section class="admin-create">
+          <h4>Create New Object Entry</h4>
+          <form id="createObjectForm" class="form-grid admin-create-grid objects-create-grid">
+            <label>
+              Name
+              <input name="name" required />
+            </label>
+            <label>
+              Description
+              <input name="description" />
+            </label>
+            <label>
+              Uploader
+              <select id="createObjectUploader" name="uploader_id"></select>
+            </label>
+            <label>
+              FBX file
+              <input name="file" type="file" accept=".fbx" required />
+            </label>
+            <button class="btn" type="submit">Create Object</button>
+          </form>
+        </section>
+
+        <div class="row spread">
+          <h4>Existing Objects</h4>
+          <button id="refreshObjectsBtn" class="btn btn-secondary" type="button">Refresh</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Uploader</th>
+                <th>File</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="objectsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-wrap"></div>
+
+    <script type="module" src="/js/admin.js"></script>
+  </body>
+</html>

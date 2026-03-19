@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Work-Shop</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/vendor/three/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main class="page">
+      <section id="authSection" class="auth-card login-look">
+        <h1 class="login-title">LOGIN</h1>
+        <form id="loginForm" class="form-grid login-form">
+          <input name="username" placeholder="Username..." required />
+          <input name="password" type="password" placeholder="Password..." required />
+          <div class="login-switch-row">
+            <button id="authThemeToggle" class="toggle" type="button" aria-label="Toggle theme">
+              <span class="knob"></span>
+            </button>
+          </div>
+          <button class="btn login-submit" type="submit">LOGIN</button>
+        </form>
+        <button id="openRegisterBtn" class="btn btn-secondary register-inline-btn" type="button">Register</button>
+        <p class="muted">Built-in accounts: <code>user</code> / <code>password</code> and <code>admin</code> / <code>password</code></p>
+      </section>
+
+      <section id="workshopSection" class="workshop hidden">
+        <aside class="sidebar">
+          <div class="side-card user-card">
+            <div class="avatar"></div>
+            <p>Signed in as</p>
+            <h2 id="activeUser">-</h2>
+            <a id="adminLink" class="btn btn-secondary hidden" href="/admin">Admin Page</a>
+            <button id="logoutBtn" class="btn btn-secondary" type="button">Logout</button>
+          </div>
+
+          <div class="side-card">
+            <p class="small-title">Theme</p>
+            <button id="themeToggle" class="toggle" type="button" aria-label="Toggle theme">
+              <span class="knob"></span>
+            </button>
+          </div>
+
+          <div class="side-card upload-card">
+            <h3>Upload</h3>
+            <form id="uploadForm" class="form-grid">
+              <label>
+                Name
+                <input id="objectName" name="name" required />
+              </label>
+              <label>
+                Description
+                <input id="objectDescription" name="description" />
+              </label>
+              <label>
+                FBX file
+                <input id="objectFile" name="file" type="file" accept=".fbx" required />
+              </label>
+              <button class="btn" type="submit">Upload</button>
+            </form>
+          </div>
+        </aside>
+
+        <section class="main-area">
+          <div class="search-row">
+            <input id="searchInput" placeholder="Search objects by name, uploader, or description..." />
+            <button id="refreshBtn" class="btn btn-secondary" type="button">Refresh</button>
+          </div>
+          <div id="objectsGrid" class="objects-grid"></div>
+        </section>
+      </section>
+    </main>
+
+    <div id="registerPopup" class="popup hidden" role="dialog" aria-modal="true" aria-labelledby="registerTitle">
+      <div class="popup-card">
+        <div class="row spread">
+          <h3 id="registerTitle">Register</h3>
+          <button class="close-popup" data-close="registerPopup" type="button">X</button>
+        </div>
+        <form id="registerForm" class="form-grid">
+          <label>
+            Username
+            <input name="username" minlength="3" required />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" minlength="4" required />
+          </label>
+          <button class="btn" type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="detailsPopup" class="popup hidden" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+      <div class="popup-card wide">
+        <div class="row spread">
+          <h3 id="detailsTitle">Object Details</h3>
+          <button class="close-popup" data-close="detailsPopup" type="button">X</button>
+        </div>
+        <p id="detailsMeta" class="muted"></p>
+        <p id="detailsDescription"></p>
+        <canvas id="detailsCanvas" class="details-canvas"></canvas>
+        <div class="row">
+          <a id="downloadBtn" class="btn" href="#">Download FBX</a>
+        </div>
+        <section class="comments-section">
+          <h4>Comments</h4>
+          <form id="commentForm" class="row">
+            <input id="commentInput" name="content" placeholder="Write a comment..." maxlength="500" required />
+            <button class="btn" type="submit">Post</button>
+          </form>
+          <div id="commentsList" class="comments-list"></div>
+        </section>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-wrap"></div>
+
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

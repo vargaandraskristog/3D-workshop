@@ -1,0 +1,528 @@
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f2f4f8;
+  --text: #171a22;
+  --muted: #5c6475;
+  --border: #d9deea;
+  --accent: #1f6feb;
+  --accent-soft: #e8f0ff;
+  --danger: #c33131;
+}
+
+body.dark {
+  --bg: #0f1116;
+  --surface: #171b24;
+  --surface-2: #212836;
+  --text: #eef2ff;
+  --muted: #a8b2c7;
+  --border: #2f3748;
+  --accent: #7aa8ff;
+  --accent-soft: #233253;
+  --danger: #ff7f7f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 12px;
+}
+
+.auth-card {
+  max-width: 520px;
+  margin: 8vh auto;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.login-look {
+  max-width: 420px;
+  text-align: center;
+  padding: 24px;
+}
+
+.login-title {
+  font-size: 62px;
+  line-height: 0.95;
+  margin: 0 0 12px;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  gap: 12px;
+}
+
+.login-form input {
+  text-align: center;
+}
+
+.login-switch-row {
+  display: flex;
+  justify-content: center;
+  padding: 2px 0;
+}
+
+.login-submit {
+  letter-spacing: 0.6px;
+}
+
+.register-inline-btn {
+  margin-top: 10px;
+}
+
+.workshop {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 12px;
+  min-height: calc(100vh - 24px);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.side-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.user-card {
+  text-align: center;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  margin: 0 auto 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.user-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.user-card h2 {
+  margin: 6px 0 10px;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+
+.small-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.toggle {
+  width: 76px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--accent-soft);
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle .knob {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  transition: transform 0.2s ease;
+}
+
+body.dark .toggle .knob {
+  transform: translateX(42px);
+}
+
+.upload-card {
+  margin-top: auto;
+}
+
+.main-area {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.search-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.objects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+.object-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.preview-canvas {
+  width: 100%;
+  height: 135px;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.object-card p {
+  margin: 0;
+}
+
+.object-card .name {
+  text-align: center;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.object-card .uploader {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 8px;
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.btn {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn-secondary {
+  border-color: var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.btn-danger {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: #fff;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.spread {
+  justify-content: space-between;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  z-index: 20;
+}
+
+.popup-card {
+  width: min(480px, 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.popup-card.wide {
+  width: min(900px, 100%);
+}
+
+.close-popup {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  padding: 4px 9px;
+}
+
+.details-canvas {
+  width: 100%;
+  height: 380px;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  margin: 8px 0;
+}
+
+.comments-section {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--surface-2);
+}
+
+.comments-section h4 {
+  margin: 0 0 10px;
+}
+
+#commentForm input {
+  flex: 1;
+}
+
+.comments-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.comment-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 8px 10px;
+}
+
+.comment-meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.toast-wrap {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  gap: 8px;
+  z-index: 30;
+}
+
+.toast {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 10px;
+  min-width: 240px;
+}
+
+.toast.error {
+  border-color: var(--danger);
+}
+
+.admin-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  gap: 12px;
+}
+
+.admin-main {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 12px;
+  min-height: calc(100vh - 24px);
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-center {
+  align-content: start;
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-user-card .form-grid {
+  margin-top: 8px;
+}
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.admin-card {
+  min-height: 190px;
+}
+
+.admin-card .name {
+  font-size: 28px;
+}
+
+.admin-popup-card {
+  max-height: 88vh;
+  overflow: auto;
+}
+
+.admin-create {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-create h4 {
+  margin: 0 0 8px;
+}
+
+.admin-create-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 8px;
+  align-items: end;
+}
+
+.objects-create-grid {
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--border);
+  padding: 6px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 1100px) {
+  .workshop {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-card {
+    margin-top: 0;
+  }
+
+  .admin-page {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-create-grid,
+  .objects-create-grid {
+    grid-template-columns: 1fr;
+  }
+}
