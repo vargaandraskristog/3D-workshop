@@ -301,6 +301,87 @@ app.post('/api/objects', requireAuth, (req, res) => {
   });
 });
 
+app.get('/api/my-objects', requireAuth, async (req, res) => {
+  try {
+    const sessionUserId = Number.parseInt(req.session.user.id, 10);
+    const rows = await allAsync(
+      objectsDb,
+      `SELECT id, name, description, filename, original_name, uploader_id, uploader_name, created_at
+       FROM objects
+       WHERE uploader_id = ?
+       ORDER BY datetime(created_at) DESC`,
+      [sessionUserId]
+    );
+
+    const result = rows.map((row) => ({
+      ...row,
+      fileUrl: `/uploads/${row.filename}`,
+      downloadUrl: `/api/objects/${row.id}/download`,
+    }));
+
+    return res.json({ objects: result });
+  } catch (_error) {
+    return res.status(500).json({ error: 'Failed to load your submissions.' });
+  }
+});
+
+app.put('/api/my-objects/:id', requireAuth, async (req, res) => {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const sessionUserId = Number.parseInt(req.session.user.id, 10);
+    const { name, description } = req.body;
+    const cleanName = String(name || '').trim();
+
+    if (!cleanName) {
+      return res.status(400).json({ error: 'Object name is required.' });
+    }
+
+    const existing = await getAsync(objectsDb, 'SELECT id, uploader_id FROM objects WHERE id = ?', [id]);
+    if (!existing) {
+      return res.status(404).json({ error: 'Object not found.' });
+    }
+    if (Number.parseInt(existing.uploader_id, 10) !== sessionUserId) {
+      return res.status(403).json({ error: 'You can only edit your own submissions.' });
+    }
+
+    await runAsync(objectsDb, 'UPDATE objects SET name = ?, description = ? WHERE id = ?', [
+      cleanName,
+      description ? String(description).trim() : '',
+      id,
+    ]);
+
+    return res.json({ ok: true });
+  } catch (_error) {
+    return res.status(500).json({ error: 'Failed to update submission.' });
+  }
+});
+
+app.delete('/api/my-objects/:id', requireAuth, async (req, res) => {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const sessionUserId = Number.parseInt(req.session.user.id, 10);
+    const row = await getAsync(objectsDb, 'SELECT id, uploader_id, filename FROM objects WHERE id = ?', [id]);
+    if (!row) {
+      return res.status(404).json({ error: 'Object not found.' });
+    }
+    if (Number.parseInt(row.uploader_id, 10) !== sessionUserId) {
+      return res.status(403).json({ error: 'You can only delete your own submissions.' });
+    }
+
+    await runAsync(objectsDb, 'DELETE FROM object_comments WHERE object_id = ?', [id]);
+    await runAsync(objectsDb, 'DELETE FROM objects WHERE id = ?', [id]);
+
+    const filePath = path.join(uploadsDir, row.filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    return res.json({ ok: true });
+  } catch (_error) {
+    return res.status(500).json({ error: 'Failed to delete submission.' });
+  }
+});
+
 app.get('/api/objects/:id/download', requireAuth, async (req, res) => {
   try {
     const row = await getAsync(objectsDb, 'SELECT filename, original_name FROM objects WHERE id = ?', [req.params.id]);
@@ -469,6 +550,21 @@ app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
         return res.status(400).json({ error: 'Cannot delete the last admin.' });
       }
     }
+
+    // Remove all comments authored by this user (on any object).
+    await runAsync(objectsDb, 'DELETE FROM object_comments WHERE author_id = ?', [id]);
+
+    // Remove this user's submissions and related comments/files.
+    const userObjects = await allAsync(objectsDb, 'SELECT id, filename FROM objects WHERE uploader_id = ?', [id]);
+    for (const objectRow of userObjects) {
+      await runAsync(objectsDb, 'DELETE FROM object_comments WHERE object_id = ?', [objectRow.id]);
+
+      const filePath = path.join(uploadsDir, objectRow.filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+    await runAsync(objectsDb, 'DELETE FROM objects WHERE uploader_id = ?', [id]);
 
     await runAsync(usersDb, 'DELETE FROM users WHERE id = ?', [id]);
     return res.json({ ok: true });

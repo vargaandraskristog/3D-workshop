@@ -168,6 +168,12 @@ body.dark .toggle .knob {
 
 .upload-card {
   margin-top: auto;
+  display: grid;
+  gap: 8px;
+}
+
+.upload-card .btn {
+  width: 100%;
 }
 
 .main-area {
@@ -224,6 +230,11 @@ body.dark .toggle .knob {
   text-align: center;
   color: var(--muted);
   font-size: 13px;
+}
+
+.object-card .row {
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .form-grid {
@@ -301,7 +312,7 @@ a {
   display: grid;
   place-items: center;
   padding: 14px;
-  z-index: 20;
+  z-index: 100;
 }
 
 .popup-card {

@@ -90,16 +90,19 @@ export function createPreviewController({ objectsGrid, detailsCanvas, detailsPop
   }
 
   async function renderCardPreviews(items) {
+    cleanupCards();
     const canvases = objectsGrid.querySelectorAll('.preview-canvas');
     for (let i = 0; i < canvases.length; i += 1) {
       const canvas = canvases[i];
       const item = items[i];
       const env = createSceneForCanvas(canvas, false);
-      cardStates.push(env);
 
       try {
         await loadObject(item.fileUrl, env.scene, env.camera);
         env.renderer.render(env.scene, env.camera);
+
+        // Card previews are static snapshots, so dispose renderer resources.
+        env.renderer.dispose();
       } catch (_error) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
@@ -111,6 +114,8 @@ export function createPreviewController({ objectsGrid, detailsCanvas, detailsPop
           ctx.font = '14px sans-serif';
           ctx.fillText('Preview failed', 12, 22);
         }
+
+        env.renderer.dispose();
       }
     }
   }
@@ -151,16 +156,6 @@ export function createPreviewController({ objectsGrid, detailsCanvas, detailsPop
   }
 
   function handleResize() {
-    cardStates.forEach((state) => {
-      const canvas = state.renderer.domElement;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-      state.camera.aspect = width / height;
-      state.camera.updateProjectionMatrix();
-      state.renderer.setSize(width, height, false);
-      state.renderer.render(state.scene, state.camera);
-    });
-
     if (detailState) {
       const canvas = detailState.renderer.domElement;
       const width = canvas.clientWidth;
